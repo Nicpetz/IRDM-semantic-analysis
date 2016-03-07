@@ -1,11 +1,13 @@
 ## IRDM-sentiment-analysis
 
 This repository is for the 2016 UCL Information Retrieval and Data Mining group coursework project.
+
 Group members are:
-Barnaby Brien
-Henrik Ebenhag
-Alexander Lilburn
-Derek Lukacsko
+
+1. Barnaby Brien
+2. Henrik Ebenhag
+3. Alexander Lilburn
+4. Derek Lukacsko
 
 Current ideas:
 * Cluster tweets by location and time to identify events
