@@ -1,11 +1,14 @@
-""" A script for playing around and *trying* to make magic happen
+""" A script for playing around
 """
 from Util.Import import load_file, get_files
-
+import pandas as pd
 
 paths = get_files()
-data = load_file(paths[0])
+data = pd.read_json(paths[1], orient='index')
 
-tweets = ' '.join(data['text'])
+# print(data.text[4].split()[4].decode('unicode-escape'))
 
-print(tweets)
+
+
+print(data.head())
+
