@@ -9,8 +9,20 @@ def load_file(filename):
     :param filename: str. path to text file in json format
     :return: Pandas DataFrame
     """
-    data = pd.read_json(filename)
-    data['date'] = pd.to_datetime(data['date'])
+    try:
+        if filename[-4:] != '.txt':
+            raise TypeError('Use .txt file not .csv')
+    except:
+        raise ValueError('Filename could not be processed. '
+                         'Check it is a path to .txt file of Twitter data in json format')
+
+    with open(filename, mode='r+t', encoding='utf-8') as f:
+        data = json.load(f)
+
+    data = pd.DataFrame(data['tweets'])
+    # data['text'] = data['text'].map(lambda x: x.encode('unicode-escape'))
+    data['date'] = data['date'].map(lambda x: int(x/1000))
+    data['date'] = pd.to_datetime(data['date'], unit='s')
 
     return data
 
