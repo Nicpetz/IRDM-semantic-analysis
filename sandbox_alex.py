@@ -17,17 +17,22 @@ import unicodedata as ud
 paths = get_files('./data/')
 length = len(paths)
 matrix = []
-for i, path in enumerate(paths):
-    print("Loading matrix: {0:0.2f}%".format((i / length) * 100), end='\r')
-    data = load_file(path)
-    matrix += data['vector'].tolist()
-print("Matrix loaded.")
-del data
+
+
+# for i, path in enumerate(paths):
+#     print("Loading matrix: {0:0.2f}%".format((i / length) * 100), end='\r')
+#     data = load_file(path)
+#     matrix += data['vector'].tolist()
+# print("Matrix loaded.")
+# del data
+
+matrix = load_file(paths[0])
+matrix = matrix['vector'].tolist()
 
 matrix = build_sparse_matrix(matrix, 2875223, verbose=True)
 
-factorise(matrix)
+w, h = factorise(matrix)
 
 print("Success!")
-
+print(w.A)
 
