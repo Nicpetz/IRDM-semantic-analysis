@@ -40,16 +40,13 @@ def cost(a, b):
     :param b: sparse matrix 2
     :return: Euclidian distance
     """
-    dif = 0
-    rows, columns = a.shape
-    for i in range(rows):
-        for j in range(columns):
-            # Euclidean Distance
-            dif += (a[i, j] - b[i, j]) ** 2
-    return dif
+    diff = a - b
+    diff = diff.multiply(diff)
+    diff = diff.sum()
+    return diff
 
 
-def factorise(v, topics=10, iterations=50):
+def factorise(v, topics=10, iterations=50, init_density=0.01):
     """
     Factorise function computes Non-negative Matrix Factorisation of input data
     :param v: input data matrix (data instances (tweets) are columns
@@ -58,15 +55,15 @@ def factorise(v, topics=10, iterations=50):
     :return w: component feature matrix - component vectors found in columns of matrix
     :return h: matrix for reconstruction of original data from component features
     """
-    v = dok_matrix(v)
+    # v = dok_matrix(v)
     terms = v.shape[0]
     instances = v.shape[1]
 
     # Initialize the weight and feature matrices with random values
     # w: terms x topics sized matrix
-    w = rand(terms, topics, density=0.001, format='dok')
+    w = rand(terms, topics, density=init_density, format='dok')
     # h: topics x instances sized matrix
-    h = rand(topics, instances, density=0.001, format='dok')
+    h = rand(topics, instances, density=init_density, format='dok')
 
     # Repeat E and M step  maximum 'iterations' number of times
     for i in range(iterations):
@@ -78,8 +75,8 @@ def factorise(v, topics=10, iterations=50):
         # Calculate the current difference between factorisation and actual
         temp_cost = cost(v, wh)
 
-        if i % 10 == 0:
-            print(temp_cost)
+        # if i % 10 == 0:
+        print(temp_cost)
 
         # End if matrix perfectly factorised
         if temp_cost == 0:
@@ -91,17 +88,19 @@ def factorise(v, topics=10, iterations=50):
         hn = w.transpose() * v
         # hd: topics x instances matrix
         hd = w.transpose() * w * h
+        hd.data[:] = 1 / hd.data
 
         # h: topics x instances matrix
-        h = (h * hn) * linalg.inv(hd)
+        h = h.multiply(hn).multiply(hd)
 
         # Update weights matrix
         # wn: terms x topics matrix
         wn = v * h.transpose()
         # wd: terms x topics matrix
         wd = w * h * h.transpose()
+        wd.data[:] = 1/wd.data
 
         # w: terms x topics matrix
-        w = (w * wn) * linalg.inv(wd)
+        w = w.multiply(wn).multiply(wd)
 
     return w, h
