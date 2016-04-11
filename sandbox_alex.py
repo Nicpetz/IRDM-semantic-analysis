@@ -31,8 +31,8 @@ matrix = matrix['vector'].tolist()
 
 matrix = build_sparse_matrix(matrix, 2875223, verbose=True)
 
-w, h = factorise(matrix)
+w, h = factorise(matrix, iterations=10, init_density=0.1)
 
 print("Success!")
-print(w.A)
+print(w.data)
 
