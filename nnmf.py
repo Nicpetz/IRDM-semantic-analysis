@@ -46,34 +46,35 @@ def cost(a, b):
     return diff
 
 
-def factorise(v, topics=10, iterations=50, init_density=0.01):
+def factorise(M, topics=10, iterations=50, init_density=0.01):
     """
     Factorise function computes Non-negative Matrix Factorisation of input data
-    :param v: input data matrix (data instances (tweets) are columns
+    :param M: input data matrix (data instances (tweets) are columns
     :param topics: number of topics required in output
     :param iterations: maximum number of training iterations
-    :return w: component feature matrix - component vectors found in columns of matrix
-    :return h: matrix for reconstruction of original data from component features
+    :param init_density: density of initialised weight matrices W and H (proportion or non-zero values)
+    :return W: component feature matrix - component vectors found in columns of matrix
+    :return H: matrix for reconstruction of original data from component features
     """
     # v = dok_matrix(v)
-    terms = v.shape[0]
-    instances = v.shape[1]
+    terms = M.shape[0]
+    instances = M.shape[1]
 
     # Initialize the weight and feature matrices with random values
-    # w: terms x topics sized matrix
-    w = rand(terms, topics, density=init_density, format='dok')
-    # h: topics x instances sized matrix
-    h = rand(topics, instances, density=init_density, format='dok')
+    # W: terms x topics sized matrix
+    W = rand(terms, topics, density=init_density, format='dok')
+    # H: topics x instances sized matrix
+    H = rand(topics, instances, density=init_density, format='dok')
 
     # Repeat E and M step  maximum 'iterations' number of times
     for i in range(iterations):
         print("Iteration: {}".format(i + 1))
         # E step
-        # wh: terms x instances sized matrix
-        wh = w * h
+        # WH: terms x instances sized matrix
+        WH = W * H
 
         # Calculate the current difference between factorisation and actual
-        temp_cost = cost(v, wh)
+        temp_cost = cost(M, WH)
 
         # if i % 10 == 0:
         print(temp_cost)
@@ -84,23 +85,23 @@ def factorise(v, topics=10, iterations=50, init_density=0.01):
 
         # M step
         # Update feature matrix
-        # hn: topics x instances matrix
-        hn = w.transpose() * v
-        # hd: topics x instances matrix
-        hd = w.transpose() * w * h
-        hd.data[:] = 1 / hd.data
+        # Hn: topics x instances matrix
+        Hn = W.transpose() * M
+        # Hd: topics x instances matrix
+        Hd = W.transpose() * W * H
+        Hd.data[:] = 1 / Hd.data
 
-        # h: topics x instances matrix
-        h = h.multiply(hn).multiply(hd)
+        # H: topics x instances matrix
+        H = H.multiply(Hn).multiply(Hd)
 
         # Update weights matrix
-        # wn: terms x topics matrix
-        wn = v * h.transpose()
-        # wd: terms x topics matrix
-        wd = w * h * h.transpose()
-        wd.data[:] = 1/wd.data
+        # Wn: terms x topics matrix
+        Wn = M * H.transpose()
+        # Wd: terms x topics matrix
+        Wd = W * H * H.transpose()
+        Wd.data[:] = 1/Wd.data
 
-        # w: terms x topics matrix
-        w = w.multiply(wn).multiply(wd)
+        # W: terms x topics matrix
+        W = W.multiply(Wn).multiply(Wd)
 
-    return w, h
+    return W, H
