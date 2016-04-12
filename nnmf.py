@@ -27,8 +27,8 @@ def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=
                 matrix[row, term] = vector[term]
     else:
         raise ValueError('Orient must be either \'columns\' or \'rows\'')
-    if verbose:
-        print("Matrix complete")
+
+    print("Matrix complete                    ")
     return csc_matrix(matrix)
 
 
@@ -68,16 +68,13 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
     # Repeat E and M step  maximum 'iterations' number of times
     for i in range(iterations):
-        print("Iteration: {}".format(i + 1))
+        print("Iteration: {}/{}       ".format(i + 1, iterations), end='\n')
         # E step
         # WH: terms x instances sized matrix
         WH = W * H
 
         # Calculate the current difference between factorisation and actual
         temp_cost = cost(M, WH)
-
-        # if i % 10 == 0:
-        print(temp_cost)
 
         # End if matrix perfectly factorised
         if temp_cost == 0:
@@ -103,21 +100,27 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
         # W: terms x topics matrix
         W = W.multiply(Wn).multiply(Wd)
-
+    print('Successfuly factorised')
     return dok_matrix(W), dok_matrix(H)
 
 
-def evaluate(W, term_dict):
+def evaluate(W, term_dict, print_output=True):
     """
-    Evaluate W matrix from nnmf
+    Evaluate W matrix from nnmf,
     :param W: W matrix
     :param term_dict: id to term reference dictionary
     :return: list of topics containing terms and relative values
     """
     items = W.items()
-    print(items)
     topics = [[] for i in range(W.shape[1])]
     for index, value in items:
         term_value = (term_dict[str(index[0])], value)
         topics[index[1]].append(term_value)
+    if print_output:
+        for i, t in enumerate(topics):
+            print("Topic {}: ".format(i+1))
+            for term, value in t:
+                print(term + ",", end=' ')
+            print('\n')
+
     return topics

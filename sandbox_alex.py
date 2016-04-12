@@ -34,9 +34,9 @@ matrix = matrix['vector'].tolist()
 
 matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
-w, h = factorise(matrix, topics=5, iterations=10, init_density=0.01)
+w, h = factorise(matrix, topics=5, iterations=20, init_density=0.1)
 
-print("Success!")
+print("Successfuly factorised!")
 
-print(evaluate(w, dict))
+evaluate(w, dict)
 
