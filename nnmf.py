@@ -1,4 +1,4 @@
-from scipy.sparse import dok_matrix, csc_matrix, rand, linalg
+from scipy.sparse import dok_matrix, csc_matrix, rand
 
 
 def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=False):
@@ -121,6 +121,6 @@ def evaluate(W, term_dict, print_output=True):
             print("Topic {}: ".format(i+1))
             for term, value in t[:-1]:
                 print(term + ",", end=' ')
-            print('{}\n'.format(t[-1]))
+            print('{}\n'.format(t[-1][0]))
 
     return topics
