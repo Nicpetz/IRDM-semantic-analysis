@@ -24,7 +24,7 @@ unique_terms = len(dict.keys())
 # matrix = []
 # for i, path in enumerate(paths):
 #     print("Loading matrix: {0:0.2f}%".format((i / length) * 100), end='\r')
-#     data = load_file(path)
+#     data = load_new_file(path)
 #     matrix += data['vector'].tolist()
 # print("Matrix loaded.")
 # del data
@@ -34,7 +34,7 @@ matrix = matrix['vector'].tolist()
 
 matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
-w, h = factorise(matrix, topics=100, iterations=10, init_density=0.01)
+w, h = factorise(matrix, topics=5, iterations=10, init_density=0.01)
 
 print("Success!")
 
