@@ -14,7 +14,7 @@ def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=
         matrix = dok_matrix((vector_length, columns))
         for column, vector in enumerate(list_of_dicts):
             if verbose:
-                print("Building matrix {0:0.2f}%".format((column / columns) * 100), end='\r')
+                print("Building matrix {:0.2%}".format(column / columns), end='\r')
             for term in vector.keys():
                 matrix[int(term), column] = vector[term]
     elif orient == 'rows':
@@ -22,7 +22,7 @@ def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=
         matrix = dok_matrix(shape=(rows, vector_length))
         for row, vector in enumerate(list_of_dicts):
             if verbose:
-                print("Building matrix {0:0.2f}%".format((row / rows) * 100), end='\r')
+                print("Building matrix {:0.2%}".format(row / rows), end='\r')
             for term in vector.keys():
                 matrix[row, term] = vector[term]
     else:
