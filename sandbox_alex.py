@@ -1,8 +1,6 @@
 """ A script for playing around
 notes:
 Total 1953447 tweets
-Total 2875223 unique terms
-
 """
 from Util.Import import load_new_file, get_files
 from nnmf import *
@@ -17,6 +15,11 @@ import unicodedata as ud
 paths = get_files('./data/')
 length = len(paths)
 
+with open('id_to_term_dictionary.txt', 'r') as f:
+    dict = json.load(f)
+
+unique_terms = len(dict.keys())
+
 # Uncomment to run factorisation on entire dataset
 # matrix = []
 # for i, path in enumerate(paths):
@@ -29,12 +32,9 @@ length = len(paths)
 matrix = load_new_file(paths[0])
 matrix = matrix['vector'].tolist()
 
-matrix = build_sparse_matrix(matrix, 2875223, verbose=True)
+matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
 w, h = factorise(matrix, topics=100, iterations=10, init_density=0.01)
-
-with open('id_to_term_dictionary.txt', 'r') as f:
-    dict = json.load(f)
 
 print("Success!")
 
