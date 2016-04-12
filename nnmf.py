@@ -81,24 +81,27 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
             break
 
         # Update feature matrix
-        # Hn: topics x instances matrix
-        Hn = W.transpose() * M
-        # Hd: topics x instances matrix
-        Hd = W.transpose() * W * H
-        Hd.data[:] = 1 / Hd.data
+        # H_numerator: topics x instances matrix
+        H_numerator = W.transpose() * M
+        # H_denominator: topics x instances matrix
+        H_denominator = W.transpose() * W * H
+        H_denominator.data[:] = 1 / H_denominator.data
 
         # H: topics x instances matrix
-        H = H.multiply(Hn).multiply(Hd)
+        H = H.multiply(H_numerator).multiply(H_denominator)
 
         # Update weights matrix
-        # Wn: terms x topics matrix
-        Wn = M * H.transpose()
-        # Wd: terms x topics matrix
-        Wd = W * H * H.transpose()
-        Wd.data[:] = 1/Wd.data
+        # W_numerator: terms x topics matrix
+        W_numerator = M * H.transpose()
+        # W_denominator: terms x topics matrix
+        W_denominator = W * H * H.transpose()
+        W_denominator.data[:] = 1 / W_denominator.data
 
         # W: terms x topics matrix
-        W = W.multiply(Wn).multiply(Wd)
+        W = W.multiply(W_numerator).multiply(W_denominator)
+
+        # TODO constrain W to unity (normalise each value by sum of the column)
+
     print('Successfuly factorised')
     return dok_matrix(W), dok_matrix(H)
 
