@@ -29,6 +29,18 @@ to enable the data to be processed on most local machines.
 
 The **W** and **H** matrices are learned via the iterative algorithm described in 
 [Lee & Seung](http://www.columbia.edu/~jwp2128/Teaching/W4721/papers/nmf_nature.pdf)'s
-article in _Nature_. The columns of **W** contain the basis vectors or components of the tweets.
-These can be considered as themes or topics of co-occurring words.
+article in _Nature_. The columns of **W** contain the basis vectors or components making up all of the tweets.
+These co-occurring word vectors can then be considered as themes or topics: a property that is facilitated
+by the sparseness of the resulting matrix.
+
+The matrix **H** then forms the encodings on which the basis vectors may be combined to reconstruct an
+approximation of the original data. Interestingly, this can provide a foundation for identifying trends over time.
+
+To provide an explanatory example, for the comparison of topic volume between two days, one would take the tweets from
+those two days, and run NNMF over this matrix. Then, by taking the **H** matrix and splitting it into the sections
+corresponding to the respective days, and calculating the mean of the encoding of each topic in those two
+resulting sub-**H** matrices, one can then compare the means from each day to get a measure for the proportion of
+Twitter volume each topic accounted for on either day.
+
+Implementation coming soon.
 
