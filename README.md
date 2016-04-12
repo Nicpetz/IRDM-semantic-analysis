@@ -1,4 +1,4 @@
-# IRDM-sentiment-analysis
+# IRDM-Sementic-Analysis
 
 This repository is for the 2016 UCL Information Retrieval and Data Mining group coursework project.
 
