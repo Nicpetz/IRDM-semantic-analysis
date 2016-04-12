@@ -28,7 +28,7 @@ def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=
     else:
         raise ValueError('Orient must be either \'columns\' or \'rows\'')
 
-    print("Matrix complete                    ")
+    print("Matrix complete.                    ")
     return csc_matrix(matrix)
 
 

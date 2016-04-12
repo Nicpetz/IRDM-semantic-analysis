@@ -15,6 +15,7 @@ matrix_density = 0.1
 
 if __name__ == "__main__":
     paths = get_files('./data/')
+    paths = paths[:number_of_files]
     length = len(paths)
 
     with open('id_to_term_dictionary.txt', 'r') as f:
@@ -24,11 +25,11 @@ if __name__ == "__main__":
 
     # Uncomment to run factorisation on entire dataset
     matrix = []
-    for i, path in enumerate(paths[:number_of_files]):
-        print("Loading matrix: {0:0.2f}%".format((i / length) * 100), end='\r')
+    for i, path in enumerate(paths):
+        print("Loading data: {0:0.2f}%".format((i / length) * 100), end='\r')
         data = load_new_file(path)
         matrix += data['vector'].tolist()
-    print("Matrix loaded.              ")
+    print("Data loaded.              ")
     del data
 
     # matrix = load_new_file(paths[0])
