@@ -1,4 +1,4 @@
-from scipy.sparse import dok_matrix, rand, linalg
+from scipy.sparse import dok_matrix, csc_matrix, rand, linalg
 
 
 def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=False):
@@ -29,7 +29,7 @@ def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=
         raise ValueError('Orient must be either \'columns\' or \'rows\'')
     if verbose:
         print("Matrix complete")
-    return matrix
+    return csc_matrix(matrix)
 
 
 def cost(a, b):
@@ -62,9 +62,9 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
     # Initialize the weight and feature matrices with random values
     # W: terms x topics sized matrix
-    W = rand(terms, topics, density=init_density, format='dok')
+    W = rand(terms, topics, density=init_density, format='csc')
     # H: topics x instances sized matrix
-    H = rand(topics, instances, density=init_density, format='dok')
+    H = rand(topics, instances, density=init_density, format='csc')
 
     # Repeat E and M step  maximum 'iterations' number of times
     for i in range(iterations):
@@ -104,4 +104,20 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
         # W: terms x topics matrix
         W = W.multiply(Wn).multiply(Wd)
 
-    return W, H
+    return dok_matrix(W), dok_matrix(H)
+
+
+def evaluate(W, term_dict):
+    """
+    Evaluate W matrix from nnmf
+    :param W: W matrix
+    :param term_dict: id to term reference dictionary
+    :return: list of topics containing terms and relative values
+    """
+    items = W.items()
+    print(items)
+    topics = [[] for i in range(W.shape[1])]
+    for index, value in items:
+        term_value = (term_dict[str(index[0])], value)
+        topics[index[1]].append(term_value)
+    return topics
