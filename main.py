@@ -7,10 +7,10 @@ from nnmf import *
 import json
 
 
-number_of_files = 5
-number_of_topics = 5
+number_of_files = 1
+number_of_topics = 10
 iterations = 20
-matrix_density = 0.1
+matrix_density = 0.05
 
 
 if __name__ == "__main__":

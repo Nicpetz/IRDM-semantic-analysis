@@ -119,8 +119,8 @@ def evaluate(W, term_dict, print_output=True):
     if print_output:
         for i, t in enumerate(topics):
             print("Topic {}: ".format(i+1))
-            for term, value in t:
+            for term, value in t[:-1]:
                 print(term + ",", end=' ')
-            print('\n')
+            print('{}\n'.format(t[-1]))
 
     return topics
