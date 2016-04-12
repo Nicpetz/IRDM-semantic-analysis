@@ -28,7 +28,7 @@ if __name__ == "__main__":
         print("Loading matrix: {0:0.2f}%".format((i / length) * 100), end='\r')
         data = load_new_file(path)
         matrix += data['vector'].tolist()
-    print("Matrix loaded.")
+    print("Matrix loaded.              ")
     del data
 
     # matrix = load_new_file(paths[0])
