@@ -1,4 +1,4 @@
-""" A script for playing around
+""" A script for running and testing nnmf
 notes:
 Total 1953447 tweets
 """
