@@ -2,15 +2,15 @@
 notes:
 Total 1953447 tweets
 """
-from Util.Import import load_new_file, get_files
-from nnmf import *
 import json
 
+from Util.Import import load_new_file, get_files
+from model.nnmf import *
 
-number_of_files = 1
+number_of_files = 5
 number_of_topics = 10
 iterations = 20
-matrix_density = 0.05
+matrix_density = 0.005
 
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     matrix = []
     for i, path in enumerate(paths):
-        print("Loading data: {:0.2%}".format((i / length)), end='\r')
+        print("Loading data: {:0.2%}".format(i / length), end='\r')
         data = load_new_file(path)
         matrix += data['vector'].tolist()
     print("Data loaded.              ")
