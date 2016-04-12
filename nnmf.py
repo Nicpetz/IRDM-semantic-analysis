@@ -68,7 +68,7 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
     # Repeat E and M step  maximum 'iterations' number of times
     for i in range(iterations):
-        print("Iteration: {}/{}       ".format(i + 1, iterations), end='\n')
+        print("Iteration: {}/{}       ".format(i + 1, iterations), end='\r')
         # E step
         # WH: terms x instances sized matrix
         WH = W * H
