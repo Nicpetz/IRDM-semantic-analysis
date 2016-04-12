@@ -66,7 +66,7 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
     # H: topics x instances sized matrix
     H = rand(topics, instances, density=init_density, format='csc')
 
-    # Repeat E and M step  maximum 'iterations' number of times
+    # Repeat iterative algorithm maximum 'iterations' number of times
     for i in range(iterations):
         print("Iteration: {}/{}       ".format(i + 1, iterations), end='\r')
         # E step
@@ -80,7 +80,6 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
         if temp_cost == 0:
             break
 
-        # M step
         # Update feature matrix
         # Hn: topics x instances matrix
         Hn = W.transpose() * M
