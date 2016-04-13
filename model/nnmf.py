@@ -46,25 +46,27 @@ def cost(a, b):
     return diff
 
 
-def factorise(M, topics=10, iterations=50, init_density=0.01):
+def factorise(V, topics=10, iterations=50, init_density=0.01):
     """
     Factorise function computes Non-negative Matrix Factorisation of input data
-    :param M: input data matrix (data instances (tweets) are columns
+    :param V: input data matrix (data instances (tweets) are columns
     :param topics: number of topics required in output
     :param iterations: maximum number of training iterations
     :param init_density: density of initialised weight matrices W and H (proportion or non-zero values)
     :return W: component feature matrix - component vectors found in columns of matrix
     :return H: matrix for reconstruction of original data from component features
     """
-    # v = dok_matrix(v)
-    terms = M.shape[0]
-    instances = M.shape[1]
+
+    terms = V.shape[0]
+    instances = V.shape[1]
 
     # Initialize the weight and feature matrices with random values
     # W: terms x topics sized matrix
     W = rand(terms, topics, density=init_density, format='csc')
     # H: topics x instances sized matrix
     H = rand(topics, instances, density=init_density, format='csc')
+
+    cost_history = []
 
     # Repeat iterative algorithm maximum 'iterations' number of times
     for i in range(iterations):
@@ -74,7 +76,9 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
         WH = W * H
 
         # Calculate the current difference between factorisation and actual
-        temp_cost = cost(M, WH)
+        temp_cost = cost(V, WH)
+
+        cost_history.append(temp_cost)
 
         # End if matrix perfectly factorised
         if temp_cost == 0:
@@ -82,7 +86,7 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
         # Update weights matrix
         # W_numerator: terms x topics matrix
-        W_numerator = M * H.transpose()
+        W_numerator = V * H.transpose()
         # W_denominator: terms x topics matrix
         W_denominator = W * H * H.transpose()
         W_denominator.data[:] = 1 / W_denominator.data
@@ -93,7 +97,7 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
 
         # Update feature matrix
         # H_numerator: topics x instances matrix
-        H_numerator = W.transpose() * M
+        H_numerator = W.transpose() * V
         # H_denominator: topics x instances matrix
         H_denominator = W.transpose() * W * H
         H_denominator.data[:] = 1 / H_denominator.data
@@ -102,6 +106,7 @@ def factorise(M, topics=10, iterations=50, init_density=0.01):
         H = H.multiply(H_numerator).multiply(H_denominator)
 
     print('Successfuly factorised')
+    print('Error profile: {}'.format(cost_history))
     return dok_matrix(W), dok_matrix(H)
 
 

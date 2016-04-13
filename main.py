@@ -9,7 +9,7 @@ from model.nnmf import *
 
 number_of_files = 1
 number_of_topics = 10
-iterations = 20
+iterations = 10
 matrix_density = 0.05
 
 
@@ -42,4 +42,3 @@ if __name__ == "__main__":
     w, h = factorise(matrix, topics=number_of_topics, iterations=iterations, init_density=matrix_density)
 
     evaluate(w, dict)
-
