@@ -7,10 +7,10 @@ import json
 from Util.Import import load_new_file, get_files
 from model.nnmf import *
 
-number_of_files = 5
+number_of_files = 1
 number_of_topics = 10
 iterations = 20
-matrix_density = 0.005
+matrix_density = 0.05
 
 
 if __name__ == "__main__":
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     length = len(paths)
 
-    with open('id_to_term_dictionary.txt', 'r') as f:
+    with open('./dictionaries/id_to_term_dictionary.txt', 'r') as f:
         dict = json.load(f)
 
     unique_terms = len(dict.keys())
