@@ -11,7 +11,7 @@ number_of_files = 1
 number_of_topics = 10
 iterations = 20
 matrix_density = 0.05
-convergence = None
+convergence = 20
 
 
 if __name__ == "__main__":
@@ -44,3 +44,5 @@ if __name__ == "__main__":
                      convergence=convergence)
 
     evaluate(w, dict)
+
+    plot_topics(h)
