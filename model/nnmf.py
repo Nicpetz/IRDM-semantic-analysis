@@ -1,4 +1,5 @@
 from scipy.sparse import dok_matrix, csc_matrix, rand
+import numpy as np
 
 
 def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=False):
@@ -46,7 +47,7 @@ def cost(a, b):
     return diff
 
 
-def factorise(V, topics=10, iterations=50, init_density=0.01):
+def factorise(V, topics=10, iterations=50, init_density=0.01, convergence=None):
     """
     Factorise function computes Non-negative Matrix Factorisation of input data
     :param V: input data matrix (data instances (tweets) are columns
@@ -67,6 +68,7 @@ def factorise(V, topics=10, iterations=50, init_density=0.01):
     H = rand(topics, instances, density=init_density, format='csc')
 
     cost_history = []
+    cache_cost = np.inf
 
     # Repeat iterative algorithm maximum 'iterations' number of times
     for i in range(iterations):
@@ -80,9 +82,13 @@ def factorise(V, topics=10, iterations=50, init_density=0.01):
 
         cost_history.append(temp_cost)
 
-        # End if matrix perfectly factorised
+        # End if matrix perfectly factorised or reaches convergence criteria
         if temp_cost == 0:
             break
+        if convergence is not None and cache_cost - temp_cost < convergence:
+            break
+        else:
+            cache_cost = temp_cost
 
         # Update weights matrix
         # W_numerator: terms x topics matrix

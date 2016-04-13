@@ -9,8 +9,9 @@ from model.nnmf import *
 
 number_of_files = 1
 number_of_topics = 10
-iterations = 10
+iterations = 20
 matrix_density = 0.05
+convergence = None
 
 
 if __name__ == "__main__":
@@ -39,6 +40,7 @@ if __name__ == "__main__":
 
     matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
-    w, h = factorise(matrix, topics=number_of_topics, iterations=iterations, init_density=matrix_density)
+    w, h = factorise(matrix, topics=number_of_topics, iterations=iterations, init_density=matrix_density,
+                     convergence=convergence)
 
     evaluate(w, dict)
