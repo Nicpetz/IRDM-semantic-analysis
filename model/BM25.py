@@ -7,6 +7,7 @@ def DocLength(Doc):
     """
     return sum(Doc.values())
 
+
 def AvgDocLength(Docs):
     """
    Calculates average length of all documents within a set
@@ -14,7 +15,7 @@ def AvgDocLength(Docs):
     count = 0
     total = 0
 
-    for Doc in Docs.values():
+    for Doc in Docs:
         total += DocLength(Doc)
         count += 1
 
@@ -22,22 +23,23 @@ def AvgDocLength(Docs):
 
     return avg
 
-def MakeIDF(queries, docs):
+
+def MakeIDF(query, docs):
     """
     Cacuates the IDF portion of the code in which the inverse distribution function is calculated for each query
     """
     IDF = {}
     N = len(docs.keys())
-    for query in queries:
-        for term in queries[query].keys():
-            if term not in IDF:
-                n = 0
-                for key in docs:
-                    if term in docs[key].keys():
-                        n += 1
-                idf = math.log((N - n + 0.5)/(n + 0.5), 2)
-                IDF[term] = idf
+    for term in query:
+        if term not in IDF:
+            n = 0
+            for key in docs:
+                if term in docs[key].keys():
+                    n += 1
+            idf = math.log((N - n + 0.5)/(n + 0.5), 2)
+            IDF[term] = idf
     return IDF
+
 
 def termFreq(term, doc):
     """
@@ -47,6 +49,7 @@ def termFreq(term, doc):
         return doc[term]
     else:
         return 0.0
+
 
 def calcBM25(query, doc, IDF, k, b, avgdl):
     """
@@ -60,6 +63,7 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
         score += IDF[key] * (numer / denom)
 
     return score
+
 
 def BM25(tweets, query, k, b):
     """

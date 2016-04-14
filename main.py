@@ -7,6 +7,8 @@ import pandas as pd
 from Util.Import import load_new_file, get_files
 from model.nnmf import build_sparse_matrix, factorise, evaluate
 from model import search
+from model import BM25
+from Util.adhoc_vectoriser import vectorise
 
 number_of_files = 1
 number_of_topics = 10
@@ -45,8 +47,11 @@ if __name__ == "__main__":
         data_temp = data_temp[arr]
         data = pd.concat([data, data_temp])
 
-    print(data.vector)
-
+    query_v = vectorise(keywords)
+    IDF = BM25.MakeIDF(keywords, data.vector)
+    print(IDF)
+    avgD = BM25.AvgDocLength(data.vector)
+    print(avgD)
     # TODO implement bm25
     matrix += data['vector'].tolist()
     print("Data loaded.              ")
