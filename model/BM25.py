@@ -1,4 +1,5 @@
 import math
+from Util.adhoc_vectoriser import vectorise
 
 
 def DocLength(Doc):
@@ -68,18 +69,18 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
     return score
 
 
-def BM25(tweets, query, k, b):
+def BM25(data, keywords, k, b, max_tweets):
     """
     Iterates through all queries and then all docs calculating the BM25 scores for each query, saving these, having been
     ordered in the set file path.
     """
-    avgdl = AvgDocLength(tweets)
-    IDF = MakeIDF(query, tweets)
-
-    scores = {}
-    for d in tweets:
-        score = calcBM25(query, tweets[d], IDF, k, b, avgdl)
-        scores[d] = score
-
-    return scores
-
+    matrix = []
+    query_v = vectorise(keywords)
+    IDF = BM25.MakeIDF(query_v, data.vector)
+    avgD = BM25.AvgDocLength(data.vector)
+    data["BM25"] = data.vector.apply(lambda x: BM25.calcBM25(query_v, x, IDF, k, b, avgD))
+    data = data.sort_values("BM25", ascending=False)
+    try:
+        matrix += data['vector'][0:max_tweets].tolist()
+    except:
+        matrix += data['vector'].tolist()
