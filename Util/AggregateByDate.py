@@ -28,16 +28,30 @@ for file in files:
 
     for T in loaded.Titles.unique():
         dfTemp = loaded[loaded.Titles == T]
-        dfTemp.reset_index()
         count+=len(dfTemp)
-        print(count)
+        dfTemp = dfTemp.reset_index()
+        #print(count)
+        df = pd.concat([df, dfTemp])
+    print(len(df))
+
+
+for T in df.Titles.unique():
+    dfTemp = df[df.Titles == T]
+    dfTemp.to_json('../DataByDay/' + T, orient= "index")
+
+
+    """
         try:
             dfTemp2 = load_new_file('../DataByDay/' + T)
-            dfTemp = pd.merge([dfTemp2, dfTemp])
+            dfTemp2 = dfTemp2.reset_index()
+            dfTemp = pd.concat([dfTemp2, dfTemp])
+            dfTemp = dfTemp.reset_index()
             dfTemp.to_json('../DataByDay/' + T, orient= "index")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!")
         except:
+            dfTemp = dfTemp.reset_index()
             dfTemp.to_json('../DataByDay/' + T, orient= "index")
-
+        """
 
 
 
