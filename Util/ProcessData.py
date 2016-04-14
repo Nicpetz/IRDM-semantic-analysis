@@ -107,10 +107,10 @@ for i, file in enumerate(files):
     data.to_json(new_files[i], orient='index')
 
 # save id/term dictionaries in json format
-with open('term_to_id_dictionary.txt', 'w') as fp:
+with open('../dictionaries/term_to_id_dictionary.txt', 'w') as fp:
     json.dump(vec.dictionary, fp)
 
-with open('id_to_term_dictionary.txt', 'w') as fp:
+with open('../dictionaries/id_to_term_dictionary.txt', 'w') as fp:
     json.dump(vec.id_reference, fp)
 
 
