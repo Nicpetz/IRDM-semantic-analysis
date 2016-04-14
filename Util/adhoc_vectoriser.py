@@ -16,8 +16,9 @@ def vectorise(list):
         try:
             vector[reference[term]] += 1
         except KeyError:
-            vector[reference[term]] = 1
-        except:
-            pass
+            try:
+                vector[reference[term]] = 1
+            except:
+                pass
 
     return vector
