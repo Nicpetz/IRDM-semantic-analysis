@@ -3,15 +3,17 @@ notes:
 Total 1953447 tweets
 """
 import json
-
+import pandas as pd
 from Util.Import import load_new_file, get_files
-from model.nnmf import *
+from model.nnmf import build_sparse_matrix, factorise, evaluate
+from model import search
 
 number_of_files = 1
 number_of_topics = 10
 iterations = 20
 matrix_density = 0.05
 convergence = 20
+search_terms = "string"
 
 
 if __name__ == "__main__":
@@ -28,10 +30,15 @@ if __name__ == "__main__":
     unique_terms = len(dict.keys())
 
     matrix = []
+    data = pd.DataFrame()
     for i, path in enumerate(paths):
         print("Loading data: {:0.2%}".format(i / length), end='\r')
-        data = load_new_file(path)
-        matrix += data['vector'].tolist()
+        data_temp = load_new_file(path)
+        data_temp = search.search(data_temp, search_terms)
+        data = pd.concat([data, data_temp])
+
+    # TODO implement bm25
+    matrix += data['vector'].tolist()
     print("Data loaded.              ")
     del data
 
@@ -44,5 +51,3 @@ if __name__ == "__main__":
                      convergence=convergence)
 
     evaluate(w, dict)
-
-    plot_topics(h)
