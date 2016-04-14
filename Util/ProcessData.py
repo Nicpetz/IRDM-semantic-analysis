@@ -80,7 +80,7 @@ class Vectoriser:
         :param df: dataframe with no vector
         :return: dataframe with vector
         """
-        df['vector'] = df['text'].map(lambda text: self.vectorise())
+        df['vector'] = df['text'].map(lambda text: self.vectorise(text))
         return df
 
     def tokeniser(self, string):
@@ -111,7 +111,6 @@ class Vectoriser:
                 list[i] = list[i].replace(num, "")
 
         list = [word for word in list if len(word) > 2]
-        print(list)
         return list
 
 # get filenames for original data and new processed data
@@ -127,10 +126,11 @@ for i, file in enumerate(files):
     if i % 20 == 0:
         print("Building IDF: {}/{} files\r".format(i+1, no_files), end='\r')
     data = load_original_file(file)
-    data = data[['username', 'date', 'text', 'profileLocation', 'latitude', 'longitude']]
+    print(data.head())
     data.text.map(lambda tweet: vec.count(tweet))
     if i == no_files - 1:
         print("Building IDF: Complete")
+
 
 # save id/term dictionaries in json format
 with open('term_to_id_dictionary.txt', 'w') as fp:
@@ -151,7 +151,7 @@ for i, file in enumerate(files):
     data = vec.add_vector(data)
     if i == no_files - 1:
         print("Vectorising: Complete")
-    data.to_json(new_files[i], orient='index')
+    # data.to_json(new_files[i], orient='index')
 
 
 
