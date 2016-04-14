@@ -1,8 +1,9 @@
 from Util.Import import load_new_file, load_original_file, get_files
 import unicodedata as ud
-import re
 import json
 import math
+from stop_words import safe_get_stop_words
+import re
 
 class Vectoriser:
     """
@@ -90,12 +91,32 @@ class Vectoriser:
         """
         # TODO: develop tokeniser
         string = string.lower()
-        list = string.split()
+        list = re.split("[, \-!?()]+", string)
+
+        stop_words = safe_get_stop_words("en")
+        numsPunc = [str(i) for i in range(10)] + ["@", "...", ":", "'", '"', '…', '.', ',']
+
+        for i in range(len(list)):
+
+            if list[i] in stop_words:
+                list[i] = list[i].replace(list[i], "")
+
+            if "#" in list[i]:
+                list[i] = list[i].replace("#", "")
+
+            if "https://" in list[i]:
+                list[i] = list[i].replace(list[i], "")
+
+            for num in numsPunc:
+                list[i] = list[i].replace(num, "")
+
+        list = [word for word in list if len(word) > 2]
+        print(list)
         return list
 
 # get filenames for original data and new processed data
-files = get_files('./Twitter')
-new_files = get_files()
+files = get_files('../Twitter')
+new_files = get_files('../data')
 
 # initialise vectoriser tool
 vec = Vectoriser()
