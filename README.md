@@ -12,7 +12,7 @@ Group members are:
 ---
 
 ### Pre-requisites
-This package uses **Python 3** and requires `numpy`, `pandas` and `scipy`. All are easily installable via pypi:  
+This package uses **Python 3** and requires `numpy`, `pandas`, `scipy` and `stop_words`. All are easily installable via pypi:  
 >`pip install ...`
 
 ---
