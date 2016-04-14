@@ -10,7 +10,7 @@ def search(df, keywords):
     l = len(keywords)
 
     arr = "[" + ("word[%i].lower() in string.lower() or " * (l-1)) + "word[%i].lower() in string.lower()" + \
-          " for string in df.text]"
+          " for string in df['text']]"
     arr = arr %tuple([i for i in range(l)])
 
     df = df[arr]
