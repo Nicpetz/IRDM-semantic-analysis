@@ -13,9 +13,10 @@ from Util.adhoc_vectoriser import vectorise
 number_of_files = 1
 number_of_topics = 10
 iterations = 20
-matrix_density = 0.05
+max_tweets = 1000
+matrix_density_prop = 0.1
 convergence = 20
-search_terms = "the fuck"
+search_terms = "premiership football soccer"
 
 
 
@@ -24,7 +25,7 @@ if __name__ == "__main__":
     paths = get_files('./data/')
 
     # Comment out following line to run factorisation on entire dataset
-    paths = paths[:number_of_files]
+    #paths = paths[:number_of_files]
 
     length = len(paths)
 
@@ -48,15 +49,23 @@ if __name__ == "__main__":
         data = pd.concat([data, data_temp])
 
     query_v = vectorise(keywords)
-    IDF = BM25.MakeIDF(keywords, data.vector)
+    print(query_v)
+    IDF = BM25.MakeIDF(query_v, data.vector)
     print(IDF)
     avgD = BM25.AvgDocLength(data.vector)
     print(avgD)
+    data["BM25"] = data.vector.apply(lambda x: BM25.calcBM25(query_v, x, IDF, 1.5, 0.5, avgD))
+    print(data[["text", "BM25"]])
     # TODO implement bm25
-    matrix += data['vector'].tolist()
+    data = data.sort_values("BM25", ascending=False)
+    try:
+        matrix += data['vector'][0:max_tweets].tolist()
+    except:
+        matrix += data['vector'].tolist()
     print("Data loaded.              ")
     del data
-
+    matrix_density = matrix_density_prop / len(matrix)
+    print(matrix_density)
     # matrix = load_new_file(paths[0])
     # matrix = matrix['vector'].tolist()
 

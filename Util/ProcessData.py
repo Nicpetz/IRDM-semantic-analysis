@@ -67,13 +67,13 @@ class Vectoriser:
         string = string.lower()
         list = re.split("[, \-!?()]+", string)
 
-        stop_words = safe_get_stop_words("en")
+        #stop_words = safe_get_stop_words("en")
         numsPunc = [str(i) for i in range(10)] + ["@", "...", ":", "'", '"', '…', '.', ',']
 
         for i in range(len(list)):
 
-            if list[i] in stop_words:
-                list[i] = list[i].replace(list[i], "")
+            #if list[i] in stop_words:
+             #   list[i] = list[i].replace(list[i], "")
 
             if "#" in list[i]:
                 list[i] = list[i].replace("#", "")

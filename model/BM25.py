@@ -19,7 +19,10 @@ def AvgDocLength(Docs):
         total += DocLength(Doc)
         count += 1
 
-    avg = total / count
+    try:
+        avg = total / count
+    except:
+        raise ZeroDivisionError("Query not in corpus")
 
     return avg
 
@@ -30,11 +33,11 @@ def MakeIDF(query, docs):
     """
     IDF = {}
     N = len(docs.keys())
-    for term in query:
+    for term in query.keys():
         if term not in IDF:
             n = 0
             for key in docs:
-                if term in docs[key].keys():
+                if str(term) in docs[key].keys():
                     n += 1
             idf = math.log((N - n + 0.5)/(n + 0.5), 2)
             IDF[term] = idf
@@ -45,8 +48,8 @@ def termFreq(term, doc):
     """
     Checks for a given term within the document and if it is present returns its frequency
     """
-    if term in doc.keys():
-        return doc[term]
+    if str(term) in doc.keys():
+        return doc[str(term)]
     else:
         return 0.0
 
@@ -57,9 +60,9 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
     """
     score = 0.0
 
-    for key in query:
-        numer = termFreq(key, doc) * (k + 1.0)
-        denom = termFreq(key, doc) + (k * (1.0 - b) + (b * DocLength(doc) / avgdl))
+    for key in query.keys():
+        numer = termFreq(str(key), doc) * (k + 1.0)
+        denom = termFreq(str(key), doc) + (k * (1.0 - b) + (b * DocLength(doc) / avgdl))
         score += IDF[key] * (numer / denom)
 
     return score
