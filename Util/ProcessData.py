@@ -12,9 +12,9 @@ class Vectoriser:
     def __init__(self):
         self.dictionary = {}
         self.id_reference = {}
-        self.idf = {}
-        self.n_dt = {}
-        self.document_count = 0
+        # self.idf = {}
+        # self.n_dt = {}
+        # self.document_count = 0
         self._id = 0
 
     def generate_id(self):
@@ -23,35 +23,6 @@ class Vectoriser:
         """
         self._id += 1
         return self._id
-
-    def count(self, string):
-        """
-        Counts documents containing each word in string and builds id/term dictionaries
-        :param string: text sentence
-        :return: null
-        """
-        self.document_count += 1
-        string = self.tokeniser(string)
-        processed = []
-        for word in string:
-            try:
-                id = self.dictionary[word]
-            except KeyError:
-                id = self.generate_id()
-                self.dictionary[word] = id
-                self.id_reference[id] = word
-            if word not in processed:
-                try:
-                    self.n_dt[id] += 1
-                except KeyError:
-                    self.n_dt[id] = 1
-
-    def build_idf(self):
-        """
-        Computes inverse document frequency as a class attribute
-        :return: null
-        """
-        self.idf = {term_id: math.log(self.document_count / self.n_dt[term_id], 2) for term_id in self.n_dt.keys()}
 
     def vectorise(self, string):
         """
@@ -63,14 +34,17 @@ class Vectoriser:
         vector = {}
 
         for word in sentence:
-            id = self.dictionary[word]
+            try:
+                id = self.dictionary[word]
+            except KeyError:
+                id = self.generate_id()
+                self.dictionary[word] = id
+                self.id_reference[id] = word
+
             try:
                 vector[id] += 1
             except KeyError:
                 vector[id] = 1
-
-        for k in vector.keys():
-            vector[k] *= self.idf[k]
 
         return vector
 
@@ -121,27 +95,6 @@ new_files = get_files('../data')
 vec = Vectoriser()
 no_files = len(files)
 
-# loop over original data to build term dictionaries and count term frequencies
-for i, file in enumerate(files):
-    if i % 20 == 0:
-        print("Building IDF: {}/{} files\r".format(i+1, no_files), end='\r')
-    data = load_original_file(file)
-    print(data.head())
-    data.text.map(lambda tweet: vec.count(tweet))
-    if i == no_files - 1:
-        print("Building IDF: Complete")
-
-
-# save id/term dictionaries in json format
-with open('term_to_id_dictionary.txt', 'w') as fp:
-    json.dump(vec.dictionary, fp)
-
-with open('id_to_term_dictionary.txt', 'w') as fp:
-    json.dump(vec.id_reference, fp)
-
-# calculate inverse document frequency from documents
-vec.build_idf()
-
 # add vector to data, drop unnecessary columns and save data to new path
 for i, file in enumerate(files):
     if i % 20 == 0:
@@ -151,7 +104,13 @@ for i, file in enumerate(files):
     data = vec.add_vector(data)
     if i == no_files - 1:
         print("Vectorising: Complete")
-    # data.to_json(new_files[i], orient='index')
+    data.to_json(new_files[i], orient='index')
 
+# save id/term dictionaries in json format
+with open('term_to_id_dictionary.txt', 'w') as fp:
+    json.dump(vec.dictionary, fp)
+
+with open('id_to_term_dictionary.txt', 'w') as fp:
+    json.dump(vec.id_reference, fp)
 
 
