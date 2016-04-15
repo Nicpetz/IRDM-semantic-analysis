@@ -12,9 +12,9 @@ class Vectoriser:
     def __init__(self):
         self.dictionary = {}
         self.id_reference = {}
-        # self.idf = {}
+        self.idf = {}
         # self.n_dt = {}
-        # self.document_count = 0
+        self.document_count = 0
         self._id = 0
 
     def generate_id(self):
@@ -32,6 +32,8 @@ class Vectoriser:
         """
         sentence = self.tokeniser(string)
         vector = {}
+        processed = []
+        self.document_count += 1
 
         for word in sentence:
             try:
@@ -41,12 +43,24 @@ class Vectoriser:
                 self.dictionary[word] = id
                 self.id_reference[id] = word
 
+            if word not in processed:
+                processed.append(word)
+                try:
+                    self.idf[id] += 1
+                except KeyError:
+                    self.idf[id] = 1
+
             try:
                 vector[id] += 1
             except KeyError:
                 vector[id] = 1
 
         return vector
+
+    def get_idf(self):
+        for id in self.idf.keys():
+            self.idf[id] = math.log(self.document_count / self.idf[id], 2)
+        return self.idf
 
     def add_vector(self, df):
         """
@@ -113,4 +127,5 @@ with open('../dictionaries/term_to_id_dictionary.txt', 'w') as fp:
 with open('../dictionaries/id_to_term_dictionary.txt', 'w') as fp:
     json.dump(vec.id_reference, fp)
 
-
+with open('../dictionaries/idf_reference.json', 'w') as fp:
+    json.dump(vec.idf, fp)
