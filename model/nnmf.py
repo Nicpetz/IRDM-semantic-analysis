@@ -1,5 +1,6 @@
 from scipy.sparse import dok_matrix, csc_matrix, rand
 import numpy as np
+import networkx as nx
 import matplotlib.pyplot as plt
 
 
@@ -114,7 +115,7 @@ def factorise(V, topics=10, iterations=50, init_density=0.01, convergence=None):
 
     print('Successfuly factorised')
     print('Error profile: {}'.format(cost_history))
-    return dok_matrix(W), dok_matrix(H)
+    return dok_matrix(W), H
 
 
 def evaluate(W, term_dict, print_output=True):
@@ -125,6 +126,7 @@ def evaluate(W, term_dict, print_output=True):
     :return: list of topics containing terms and relative values
     """
     items = W.items()
+    items = sorted(items, key=lambda x: x[1], reverse=True)
     topics = [[] for i in range(W.shape[1])]
     for index, value in items:
         term_value = (term_dict[str(index[0])], value)
@@ -139,11 +141,6 @@ def evaluate(W, term_dict, print_output=True):
     return topics
 
 def plot_topics(H):
-    index = np.arange(H.shape[1])
-    index = index.reshape(1, H.shape[1])
-    H_topics = [H[i, :].toarray() for i in range(H.shape[0])]
-    # plt.yscale('log')
-    for topic in H_topics:
-        print(index.shape, topic.shape)
-        plt.plot(index, topic)
-    plt.show()
+    for tweet in range(H.shape[1]):
+        for tweet2 in range(H.shape[1]):
+            pass
