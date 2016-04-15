@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
             length = len(paths)
 
-            with open('./dictionaries/id_to_term_dictionary.txt', 'r') as f:
+            with open('./dictionaries/id_to_term_dictionary.json', 'r') as f:
                 dict = json.load(f)
 
             unique_terms = len(dict.keys())

@@ -7,7 +7,7 @@ def vectorise(list):
     :param list: list of strings to be vectorised
     :return: sparse vector in dictionary form
     """
-    with open('./dictionaries/term_to_id_dictionary.txt') as fp:
+    with open('./dictionaries/term_to_id_dictionary.json') as fp:
         reference = json.load(fp)
 
     vector = {}
