@@ -86,7 +86,7 @@ def BM25(data, keywords, k, b, max_tweets):
     try:
         matrix += data['vector'][0:max_tweets].tolist()
         data = data.reset_index()
-        data = data.ix[:max_tweets, :]
+        data = data.ix[:max_tweets-1, :]
         return data, matrix
     except:
         matrix += data['vector'].tolist()

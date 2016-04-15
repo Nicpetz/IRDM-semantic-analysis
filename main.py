@@ -4,19 +4,20 @@ Total 1953447 tweets
 """
 import json
 import pandas as pd
+import numpy as np
 from Util.Import import load_new_file, get_files
 from model.nnmf import build_sparse_matrix, factorise, evaluate
 from model import search
 from model import BM25
 from Util.adhoc_vectoriser import vectorise
 
-number_of_files = None
-number_of_topics = 5
+number_of_files = 750
+number_of_topics = 15
 iterations = 20
 max_tweets = 1000
 matrix_density = 0.05
-convergence = 20
-search_terms = "fireworks night"
+convergence = 0.1
+search_terms = "funny cat"
 
 
 if __name__ == "__main__":
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     print("Running BM25 to rank data.")
     data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets)
-    print("Complete. {} tweets returned".format(len(data)))
+    print("Complete. {} tweets returned".format(len(matrix)))
 
     matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
@@ -61,3 +62,6 @@ if __name__ == "__main__":
                      convergence=convergence)
 
     evaluate(w, dict)
+
+    h.data[:] = 1 / h.data
+    print(np.count_nonzero(h.toarray().sum(axis=0))/h.shape[1])
