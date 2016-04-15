@@ -76,11 +76,14 @@ def BM25(data, keywords, k, b, max_tweets):
     """
     matrix = []
     query_v = vectorise(keywords)
-    IDF = BM25.MakeIDF(query_v, data.vector)
-    avgD = BM25.AvgDocLength(data.vector)
-    data["BM25"] = data.vector.apply(lambda x: BM25.calcBM25(query_v, x, IDF, k, b, avgD))
+    IDF = MakeIDF(query_v, data.vector)
+    avgD = AvgDocLength(data.vector)
+    data["BM25"] = data.vector.apply(lambda x: calcBM25(query_v, x, IDF, k, b, avgD))
     data = data.sort_values("BM25", ascending=False)
+    data = data.reset_index()
     try:
         matrix += data['vector'][0:max_tweets].tolist()
+        return data, matrix
     except:
         matrix += data['vector'].tolist()
+        return data, matrix
