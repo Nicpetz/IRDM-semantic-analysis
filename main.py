@@ -11,13 +11,13 @@ from model import search
 from model import BM25
 from Util.adhoc_vectoriser import vectorise
 
-number_of_files = 750
+number_of_files = 300
 number_of_topics = 15
 iterations = 20
 max_tweets = 1000
 matrix_density = 0.05
 convergence = 0.1
-search_terms = "funny cat"
+search_terms = "rugby world cup"
 
 
 if __name__ == "__main__":
@@ -54,14 +54,25 @@ if __name__ == "__main__":
 
     print("Running BM25 to rank data.")
     data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets)
-    print("Complete. {} tweets returned".format(len(matrix)))
+    print("Complete. {} tweets returned\n".format(len(data)))
 
     matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
+    print("Running NNMF factorisation.")
     w, h = factorise(matrix, topics=number_of_topics, iterations=iterations, init_density=matrix_density,
                      convergence=convergence)
 
     evaluate(w, dict)
 
-    h.data[:] = 1 / h.data
-    print(np.count_nonzero(h.toarray().sum(axis=0))/h.shape[1])
+    # Adjacency matrix code
+    # h = h.toarray()
+    # h = h[:, np.nonzero(h.sum(axis=0))]
+    # h = h[:, 0, :]
+    # topic_zero = np.zeros((number_of_topics, number_of_topics))
+    # tweet_zero = np.zeros((h.shape[1], h.shape[1]))
+    # h_t = h.transpose()
+    # top = np.concatenate((topic_zero, h), axis=1)
+    # bottom = np.concatenate((h_t, tweet_zero), axis=1)
+    # final = np.concatenate((top, bottom))
+    #
+    # pd.DataFrame(final).to_csv('./sample_output.csv', header=[i for i in range(final.shape[0])], index=[i for i in range(final.shape[0])])
