@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-from sklearn import linear_model
-
+import statsmodels.api as sm
 
 def plot3d(df):
     fig = plt.figure()
@@ -25,28 +24,32 @@ def plot3d(df):
 
     plt.show()
 
-def getConstant(numTweets, desired = 30):
-    density = (desired - (1.04854984e-01 * numTweets) - 21.96103482) / 1.78221924e+02
+def getDensity(numTweets, desired = 30):
+    constant = (desired - (0.131390 * numTweets) + 94.569726 + 50) / 693.727522
+    density = (constant*1000) / numTweets
+    if density > 1:
+        density = 1
     return density
 
 
 
 if __name__ ==  "__main__":
     df = pd.read_csv("../gridResults2.csv", index_col = 0)
-    df = df[0:29]
+    df["Intercept"] = 1
 
     #plot3d(df)
 
-    X = df[[0,1]]
+    #df = df[20:]
+    X = df[[0,1,4]]
     y = df[[2]]
-    print(X)
-    print(y)
-
-    model = linear_model.LinearRegression()
-    model = model.fit(X, y)
-
-    #print(model.coef_)
-    #print(model.intercept_)
 
 
-    #print(getConstant(1000))
+    model = sm.OLS(y, X)
+    model = model.fit()
+
+    print(model.params)
+
+    for i in range(100, 1001, 100):
+        print(getConstant(i, 30))
+
+
