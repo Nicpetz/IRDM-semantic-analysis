@@ -1,4 +1,5 @@
 import math
+import json
 from Util.adhoc_vectoriser import vectorise
 
 
@@ -76,7 +77,8 @@ def BM25(data, keywords, k, b, max_tweets):
     """
     matrix = []
     query_v = vectorise(keywords)
-    IDF = MakeIDF(query_v, data.vector)
+    with open('./dictionaries/idf_reference.json') as fp:
+        IDF = json.read(fp)
     avgD = AvgDocLength(data.vector)
     data["BM25"] = data.vector.apply(lambda x: calcBM25(query_v, x, IDF, k, b, avgD))
     data = data.sort_values("BM25", ascending=False)
