@@ -65,7 +65,7 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
     for key in query.keys():
         numer = termFreq(str(key), doc) * (k + 1.0)
         denom = termFreq(str(key), doc) + (k * (1.0 - b) + (b * DocLength(doc) / avgdl))
-        score += IDF[key] * (numer / denom)
+        score += IDF[str(key)] * (numer / denom)
 
     return score
 
@@ -78,13 +78,15 @@ def BM25(data, keywords, k, b, max_tweets):
     matrix = []
     query_v = vectorise(keywords)
     with open('./dictionaries/idf_reference.json') as fp:
-        IDF = json.read(fp)
+        IDF = json.load(fp)
     avgD = AvgDocLength(data.vector)
     data["BM25"] = data.vector.apply(lambda x: calcBM25(query_v, x, IDF, k, b, avgD))
     data = data.sort_values("BM25", ascending=False)
     data = data.reset_index()
     try:
         matrix += data['vector'][0:max_tweets].tolist()
+        data = data.reset_index()
+        data = data.ix[:max_tweets, :]
         return data, matrix
     except:
         matrix += data['vector'].tolist()
