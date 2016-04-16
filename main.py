@@ -5,11 +5,9 @@ Total 1953447 tweets
 import json
 import pandas as pd
 import numpy as np
-from Util.Import import load_new_file, get_files
+from Util.Import import load_file, get_files
 from model.nnmf import build_sparse_matrix, factorise, evaluate
-from model import search
 from model import BM25
-from Util.adhoc_vectoriser import vectorise
 from Graph.NetXGraph import CreateNetGraph
 from Util.density_constant import getDensity
 
@@ -47,7 +45,7 @@ if __name__ == "__main__":
     l = len(keywords)
     for i, path in enumerate(paths):
         print("Searching data: {:0.2%}".format(i / length), end='\r')
-        data_temp = load_new_file(path)
+        data_temp = load_file(path)
         arr = "[" + ("keywords[%i].lower() in string.lower() or " * (l-1)) + "keywords[%i].lower() in string.lower()" +\
               " for string in data_temp['text']]"
         arr = eval(arr % tuple([i for i in range(l)]))

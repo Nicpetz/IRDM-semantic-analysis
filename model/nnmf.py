@@ -1,7 +1,5 @@
 from scipy.sparse import dok_matrix, csc_matrix, rand
 import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
 
 
 def build_sparse_matrix(list_of_dicts, vector_length, orient='columns', verbose=False):
@@ -139,8 +137,3 @@ def evaluate(W, term_dict, print_output=True):
             print('{}\n'.format(t[-1][0]))
 
     return topics
-
-def plot_topics(H):
-    for tweet in range(H.shape[1]):
-        for tweet2 in range(H.shape[1]):
-            pass

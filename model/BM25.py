@@ -115,8 +115,6 @@ def BM25(data, keywords, k, b, max_tweets, eval = None, K = 1000):
         else:
             print("No prepared data for evaluation")
 
-
-
     try:
         matrix += data['vector'][0:max_tweets].tolist()
         data = data.reset_index()

@@ -1,8 +1,6 @@
-from Util.Import import load_new_file, load_original_file, get_files
-import unicodedata as ud
+from Util.Import import load_file, get_files
 import json
 import math
-from stop_words import safe_get_stop_words
 import re
 
 class Vectoriser:
@@ -101,8 +99,7 @@ class Vectoriser:
         return list
 
 # get filenames for original data and new processed data
-files = get_files('../Twitter')
-new_files = get_files('../data')
+files = get_files('../data')
 
 # initialise vectoriser tool
 vec = Vectoriser()
@@ -112,12 +109,12 @@ no_files = len(files)
 for i, file in enumerate(files):
     if i % 20 == 0:
         print("Adding vector to data: {}/{} files\r".format(i+1, no_files), end='\r')
-    data = load_original_file(file)
+    data = load_file(file)
     data = data[['username', 'date', 'text', 'profileLocation', 'latitude', 'longitude']]
     data = vec.add_vector(data)
     if i == no_files - 1:
         print("Vectorising: Complete                              ")
-    data.to_json(new_files[i], orient='index')
+    data.to_json(files[i], orient='index')
 
 # save id/term dictionaries in json format
 with open('../dictionaries/term_to_id_dictionary.json', 'w') as fp:
