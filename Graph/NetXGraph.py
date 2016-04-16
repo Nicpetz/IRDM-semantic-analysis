@@ -1,5 +1,6 @@
 import networkx as nx
 
+
 def CreateNetGraph(h):
     G = nx.MultiDiGraph()
     topics="abcdefghijklmnop"
@@ -22,6 +23,6 @@ def CreateNetGraph(h):
                 count +=1
     # print(count)
 
-    nx.write_gml(G,"graph.gml")
+    nx.write_gml(G, "graph.gml")
     return G
 
