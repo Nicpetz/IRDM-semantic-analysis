@@ -11,13 +11,15 @@ from model import search
 from model import BM25
 from Util.adhoc_vectoriser import vectorise
 
-number_of_files = 300
-number_of_topics = 15
+number_of_files = None
+number_of_topics = 10
 iterations = 20
 max_tweets = 1000
-matrix_density = 0.05
+matrix_density = 0.03
 convergence = 0.1
-search_terms = "rugby world cup"
+search_terms = input('Enter search terms: ')
+while len(search_terms) < 1:
+    search_terms = input('Please enter one or more keywords: ')
 
 
 if __name__ == "__main__":
@@ -63,6 +65,9 @@ if __name__ == "__main__":
                      convergence=convergence)
 
     evaluate(w, dict)
+
+    non_zero_prop = np.count_nonzero(h.toarray().sum(axis=0)) / h.shape[1]
+    print('Proportion of tweets with at least one topic assigned: {:0.2%}'.format(non_zero_prop))
 
     # Adjacency matrix code
     # h = h.toarray()
