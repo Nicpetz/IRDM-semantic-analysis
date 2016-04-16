@@ -13,26 +13,16 @@ from Util.adhoc_vectoriser import vectorise
 from Graph.NetXGraph import CreateNetGraph
 from Util.density_constant import getDensity
 
-<<<<<<< HEAD
-number_of_files = None
-number_of_topics = 10
-iterations = 20
-max_tweets = 1000
-matrix_density = 0.03
-convergence = 0.1
-search_terms = input('Enter search terms: ')
-while len(search_terms) < 1:
-    search_terms = input('Please enter one or more keywords: ')
-=======
 
-number_of_files = 150
+number_of_files = None
 number_of_topics = 10
 iterations = 20
 max_tweets = 1000
 matrix_density = 0.1
 convergence = 0.1
-search_terms = "ucl student"
->>>>>>> f6ffe46eee594d6dd5e38a5e51beb7b7419d874f
+search_terms = input('Enter search terms: ')
+while len(search_terms) < 1:
+    search_terms = input('Please enter one or more keywords: ')
 
 
 if __name__ == "__main__":
@@ -40,8 +30,8 @@ if __name__ == "__main__":
     paths = get_files('./data/')
 
     # Comment out following line to run factorisation on entire dataset
-    #if number_of_files is not None:
-    #    paths = paths[:number_of_files]
+    if number_of_files is not None:
+       paths = paths[:number_of_files]
 
     length = len(paths)
 
