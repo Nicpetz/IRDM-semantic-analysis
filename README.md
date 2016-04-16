@@ -41,6 +41,6 @@ proximity of subtopics as well as the distribution of tweets amongst these supto
 
 ### Manual
 1. In Terminal, navigate to the project root directory
-2. Run `python main.py`.
-3. Enter keywords to search data on and number of topics you wish to retrieve.
-4. Receive lists of co-occuring words sorted by relevance to each sub-topic.
+2. Run `python main.py`
+3. Enter keywords to search data on and number of topics you wish to retrieve
+4. Receive lists of co-occuring words sorted by relevance to each sub-topic
