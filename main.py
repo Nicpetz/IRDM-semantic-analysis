@@ -10,6 +10,7 @@ from model.nnmf import build_sparse_matrix, factorise, evaluate
 from model import search
 from model import BM25
 from Util.adhoc_vectoriser import vectorise
+from Graph.NetXGraph import CreateNetGraph
 
 number_of_files = 300
 number_of_topics = 15
@@ -17,7 +18,7 @@ iterations = 20
 max_tweets = 1000
 matrix_density = 0.05
 convergence = 0.1
-search_terms = "rugby world cup"
+search_terms = "fireworks night"
 
 
 if __name__ == "__main__":
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     print("{} tweets found for '{}'.\n".format(len(data), search_terms))
 
     print("Running BM25 to rank data.")
-    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets)
+    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets, 'rugby')
     print("Complete. {} tweets returned\n".format(len(data)))
 
     matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
@@ -63,6 +64,8 @@ if __name__ == "__main__":
                      convergence=convergence)
 
     evaluate(w, dict)
+
+    CreateNetGraph(h)
 
     # Adjacency matrix code
     # h = h.toarray()
