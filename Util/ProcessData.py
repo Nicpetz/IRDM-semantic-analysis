@@ -77,7 +77,6 @@ class Vectoriser:
         :param string: text sentence
         :return: list of tokens
         """
-        # TODO: develop tokeniser
         string = string.lower()
         list = re.split("[, \-!?()]+", string)
 
