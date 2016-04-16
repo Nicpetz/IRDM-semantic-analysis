@@ -10,34 +10,48 @@ import statsmodels.api as sm
 def plot3d(df):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    X = df[[0]]
-    Y = df[[1]]
+    X = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+    Y = [0.25, 0.2, 0.15, 0.1, 0.05, 0.025]
     X, Y = np.meshgrid(X, Y)
-    Z = df[[2]]
-    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,
-                           linewidth=0, antialiased = True)
+    Z = [i for i in df["AvgTopicLen"]][::-1]
+    Z = np.reshape(Z, X.shape)
+
+    T = [i for i in df["Time"]][::-1]
+    T = np.reshape(T, X.shape)
+
+    print(T)
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
+                          cmap=cm.RdBu,linewidth=0, antialiased=True)
+
+    surf2 = ax.plot_surface(X, Y, T, rstride=1, cstride=1,
+                          cmap=cm.RdBu,linewidth=0, antialiased=True)
 
     ax.zaxis.set_major_locator(LinearLocator(10))
     ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
     fig.colorbar(surf, shrink=0.5, aspect=5)
-
     plt.show()
 
 def getDensity(numTweets, desired = 30):
-    constant = (desired - (0.131390 * numTweets) + 94.569726 + 50) / 693.727522
-    density = (constant*1000) / numTweets
+    #constant = (50 - (0.131390 * numTweets) + 94.569726) / 693.727522
+    constant = 94.569726
+    density = constant / numTweets
     if density > 1:
         density = 1
+    elif density < 0.01:
+        density = 0.01
     return density
 
 
 
 if __name__ ==  "__main__":
-    df = pd.read_csv("../gridResults2.csv", index_col = 0)
+    df = pd.read_csv("../GridResults/gridResults2.csv", index_col = 0)
     df["Intercept"] = 1
 
-    #plot3d(df)
+    plot3d(df)
 
     #df = df[20:]
     X = df[[0,1,4]]
@@ -48,8 +62,3 @@ if __name__ ==  "__main__":
     model = model.fit()
 
     print(model.params)
-
-    for i in range(100, 1001, 100):
-        print(getConstant(i, 30))
-
-
