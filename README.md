@@ -12,12 +12,11 @@ Group members are:
 ---
 
 ### Pre-requisites
-This package uses **Python 3** and requires `numpy`, `pandas`, `scipy` and `stop_words`. All are easily installable via pypi:  
+This package uses **Python 3** and requires `numpy`, `pandas`, `scipy`, `statsmodels` and `networkx`. All are easily installable via pypi:  
 >`pip install ...`
 
 ---
 
-### Introduction
 The following package uses NNMF, or non-negative matrix factorisation, 
 to extract general themes and topics from data pulled from Twitter.
 
@@ -43,3 +42,8 @@ The matrix **H** then forms the encodings on which the basis vectors may be comb
 approximation of the original data. Displaying these encodings in weighted graph form allows us to visualise
 proximity of subtopics as well as the distribution of tweets amongst these suptopics.
 
+### Manual
+1. In Terminal, navigate to the project root directory
+2. Run `python main.py`.
+3. Enter keywords to search data on and number of topics you wish to retrieve.
+4. Receive lists of co-occuring words sorted by relevance to each sub-topic.
