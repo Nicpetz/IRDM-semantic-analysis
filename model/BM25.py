@@ -89,7 +89,7 @@ def NDCG(df):
 
 def BM25(data, keywords, k, b, max_tweets, eval = None, K = 0):
     """
-    Iterates through all queries and then all docs calculating the BM25 scores for each query, saving these, having been
+    Iterates through all docs calculating the BM25 scores for each query, saving these, having been
     ordered in the set file path.
     """
     matrix = []
