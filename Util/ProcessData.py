@@ -117,7 +117,7 @@ for i, file in enumerate(files):
     data = data[['username', 'date', 'text', 'profileLocation', 'latitude', 'longitude']]
     data = vec.add_vector(data)
     if i == no_files - 1:
-        print("Vectorising: Complete")
+        print("Vectorising: Complete                              ")
     data.to_json(new_files[i], orient='index')
 
 # save id/term dictionaries in json format
