@@ -64,7 +64,7 @@ if __name__ == "__main__":
     print("{} tweets found for '{}'.\n".format(len(data), search_terms))
 
     print("Running BM25 to rank data.")
-    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets, 'rugby')
+    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets)
     print("Complete. {} tweets returned\n".format(len(data)))
 
     matrix_density = getDensity(max_tweets)
