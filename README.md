@@ -40,13 +40,6 @@ These co-occurring word vectors can then be considered as themes or topics: a pr
 by the sparseness of the resulting matrix.
 
 The matrix **H** then forms the encodings on which the basis vectors may be combined to reconstruct an
-approximation of the original data. Interestingly, this can provide a foundation for identifying trends over time.
-
-To provide an explanatory example, for the comparison of topic volume between two days, one would take the tweets from
-those two days, and run NNMF over this matrix. Then, by taking the **H** matrix and splitting it into the sections
-corresponding to the respective days, and calculating the mean of the encoding of each topic in those two
-resulting sub-**H** matrices, one can then compare the means from each day to get a measure for the proportion of
-Twitter volume each topic accounted for on either day.
-
-Implementation coming soon.
+approximation of the original data. Displaying these encodings in weighted graph form allows us to visualise
+proximity of subtopics as well as the distribution of tweets amongst these suptopics.
 
