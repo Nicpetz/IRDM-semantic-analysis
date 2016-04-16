@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 
 def CreateNetGraph(h):
     G = nx.MultiDiGraph()
@@ -15,7 +14,6 @@ def CreateNetGraph(h):
                 maxInd = t
         G.add_node(tweet, bipartite=1, color = maxInd)
 
-
     count = 0
     for t in range(h.shape[0]):
         for tweet in range(h.shape[1]):
@@ -24,11 +22,6 @@ def CreateNetGraph(h):
                 count +=1
     print(count)
 
-
     nx.write_gml(G,"graph.gml")
-    #plt.figure()
-    #pos = nx.spring_layout(G)
-    #nx.draw_networkx_edges(G, pos, width=6)
-    #plt.show()
     return G
 
