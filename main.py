@@ -18,7 +18,6 @@ number_of_files = None
 number_of_topics = 10
 iterations = 20
 max_tweets = 1000
-matrix_density = 0.1
 convergence = 0.1
 search_terms = input('Enter search terms: ')
 while len(search_terms) < 1:
@@ -74,17 +73,3 @@ if __name__ == "__main__":
     print('Proportion of tweets with at least one topic assigned: {:0.2%}'.format(non_zero_prop))
 
     G = CreateNetGraph(h)
-
-
-    # Adjacency matrix code
-    # h = h.toarray()
-    # h = h[:, np.nonzero(h.sum(axis=0))]
-    # h = h[:, 0, :]
-    # topic_zero = np.zeros((number_of_topics, number_of_topics))
-    # tweet_zero = np.zeros((h.shape[1], h.shape[1]))
-    # h_t = h.transpose()
-    # top = np.concatenate((topic_zero, h), axis=1)
-    # bottom = np.concatenate((h_t, tweet_zero), axis=1)
-    # final = np.concatenate((top, bottom))
-    #
-    # pd.DataFrame(final).to_csv('./sample_output.csv', header=[i for i in range(final.shape[0])], index=[i for i in range(final.shape[0])])
