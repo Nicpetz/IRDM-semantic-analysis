@@ -37,6 +37,8 @@ The matrix **H** then forms the encodings on which the basis vectors may be comb
 approximation of the original data. Displaying these encodings in weighted graph form allows us to visualise
 proximity of subtopics as well as the distribution of tweets amongst these suptopics.
 
+---
+
 ### Manual
 1. In Terminal, navigate to the project root directory
 2. Run `python main.py`.
