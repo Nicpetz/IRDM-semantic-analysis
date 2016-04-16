@@ -10,7 +10,10 @@ from model.nnmf import build_sparse_matrix, factorise, evaluate
 from model import search
 from model import BM25
 from Util.adhoc_vectoriser import vectorise
+from Graph.NetXGraph import CreateNetGraph
+from Util.density_constant import getDensity
 
+<<<<<<< HEAD
 number_of_files = None
 number_of_topics = 10
 iterations = 20
@@ -20,6 +23,16 @@ convergence = 0.1
 search_terms = input('Enter search terms: ')
 while len(search_terms) < 1:
     search_terms = input('Please enter one or more keywords: ')
+=======
+
+number_of_files = 150
+number_of_topics = 10
+iterations = 20
+max_tweets = 1000
+matrix_density = 0.1
+convergence = 0.1
+search_terms = "ucl student"
+>>>>>>> f6ffe46eee594d6dd5e38a5e51beb7b7419d874f
 
 
 if __name__ == "__main__":
@@ -27,8 +40,8 @@ if __name__ == "__main__":
     paths = get_files('./data/')
 
     # Comment out following line to run factorisation on entire dataset
-    if number_of_files is not None:
-        paths = paths[:number_of_files]
+    #if number_of_files is not None:
+    #    paths = paths[:number_of_files]
 
     length = len(paths)
 
@@ -55,9 +68,10 @@ if __name__ == "__main__":
     print("{} tweets found for '{}'.\n".format(len(data), search_terms))
 
     print("Running BM25 to rank data.")
-    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets)
+    data, matrix = BM25.BM25(data, keywords, 1.5, 0.5, max_tweets, 'rugby')
     print("Complete. {} tweets returned\n".format(len(data)))
 
+    matrix_density = getDensity(max_tweets)
     matrix = build_sparse_matrix(matrix, unique_terms, verbose=True)
 
     print("Running NNMF factorisation.")
@@ -66,8 +80,12 @@ if __name__ == "__main__":
 
     evaluate(w, dict)
 
-    non_zero_prop = np.count_nonzero(h.toarray().sum(axis=0)) / h.shape[1]
-    print('Proportion of tweets with at least one topic assigned: {:0.2%}'.format(non_zero_prop))
+<<<<<<< HEAD
+
+=======
+    G = CreateNetGraph(h)
+
+>>>>>>> f6ffe46eee594d6dd5e38a5e51beb7b7419d874f
 
     # Adjacency matrix code
     # h = h.toarray()

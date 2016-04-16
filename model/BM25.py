@@ -71,23 +71,27 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
 
     return score
 
-def NDCG(df):
+def NDCG(df, K):
     rels = df["Score"]
     ideal_rels = np.sort(rels)[::-1]
-
     dcg = rels[0]
-    for i in range(1,len(rels)):
-        dcg += rels[i] / math.log(i+1, 2)
+    for i in range(1, K):
+        try:
+            dcg += rels[i] / math.log(i+1, 2)
+        except:
+            pass
 
     idcg = ideal_rels[0]
-    for i in range(1,len(ideal_rels)):
-        idcg += ideal_rels[i] / math.log(i+1, 2)
-
+    for i in range(1, K):
+        try:
+            idcg += ideal_rels[i] / math.log(i+1, 2)
+        except:
+            pass
     ndcg = dcg/idcg
 
     print("Search Results in an NDCG accuracy of: ", ndcg)
 
-def BM25(data, keywords, k, b, max_tweets, eval = None, K = 0):
+def BM25(data, keywords, k, b, max_tweets, eval = None, K = 1000):
     """
     Iterates through all docs calculating the BM25 scores for each query, saving these, having been
     ordered in the set file path.
@@ -103,11 +107,11 @@ def BM25(data, keywords, k, b, max_tweets, eval = None, K = 0):
 
     if eval != None:
         if eval == "rugby":
-            df = pd.read_csv("./BM25_samples/rugby world cup_output.csv")
-            print(NDCG(df))
+            df = pd.read_csv("./BM25_samples/rugby world cup_output.csv", usecols=[0,1])
+            NDCG(df, K)
         elif eval == "fireworks":
             df = pd.read_csv("./BM25_samples/fireworks night_output.csv", usecols=[0,1])
-            print(NDCG(df))
+            NDCG(df, K)
         else:
             print("No prepared data for evaluation")
 
