@@ -13,14 +13,23 @@ from Util.density_constant import getDensity
 
 
 number_of_files = None
-number_of_topics = 10
 iterations = 20
 max_tweets = 1000
 convergence = 0.1
-search_terms = input('Enter search terms: ')
+search_terms = input('\nEnter search terms: ')
 while len(search_terms) < 1:
     search_terms = input('Please enter one or more keywords: ')
 
+try:
+    number_of_topics = int(input('\nHow many sub-topics would you like to retrieve?\nWe recommend between 5 and 10: '))
+except ValueError:
+    number_of_topics = 0
+while number_of_topics < 2:
+    try:
+        number_of_topics = int(input('Please enter a number, 2 or more: '))
+    except ValueError:
+        number_of_topics = 0
+print("\n\nInitialising system...\n")
 
 if __name__ == "__main__":
 
