@@ -80,12 +80,11 @@ if __name__ == "__main__":
 
     evaluate(w, dict)
 
-<<<<<<< HEAD
+    non_zero_prop = np.count_nonzero(h.toarray().sum(axis=0)) / h.shape[1]
+    print('Proportion of tweets with at least one topic assigned: {:0.2%}'.format(non_zero_prop))
 
-=======
     G = CreateNetGraph(h)
 
->>>>>>> f6ffe46eee594d6dd5e38a5e51beb7b7419d874f
 
     # Adjacency matrix code
     # h = h.toarray()
