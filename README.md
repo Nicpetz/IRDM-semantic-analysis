@@ -27,6 +27,12 @@ from the latter part of 2015.
 The implementation takes advantage of the sparsity of the bag-of-words tweet representation
 to enable the data to be processed on most local machines.
 
+First, the tweets are scored for relevance to a query using the [Okapi BM25](https://en.wikipedia.org/wiki/Okapi_BM25) 
+scoring algorithm. The number of results returned is capped to 1000 for reasons of required computational power.
+
+The tweets are then decomposed into **W** and **H** matrices (described below) via NNMF. This allows representation of
+subtopics within the returned tweets.
+
 The **W** and **H** matrices are learned via the iterative algorithm described in 
 [Lee & Seung](http://www.columbia.edu/~jwp2128/Teaching/W4721/papers/nmf_nature.pdf)'s
 article in _Nature_. The columns of **W** contain the basis vectors or components making up all of the tweets.
