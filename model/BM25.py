@@ -1,5 +1,7 @@
 import math
 import json
+import pandas as pd
+import numpy as np
 from Util.adhoc_vectoriser import vectorise
 
 
@@ -69,8 +71,23 @@ def calcBM25(query, doc, IDF, k, b, avgdl):
 
     return score
 
+def NDCG(df):
+    rels = df["Score"]
+    ideal_rels = np.sort(rels)[::-1]
 
-def BM25(data, keywords, k, b, max_tweets):
+    dcg = rels[0]
+    for i in range(1,len(rels)):
+        dcg += rels[i] / math.log(i+1, 2)
+
+    idcg = ideal_rels[0]
+    for i in range(1,len(ideal_rels)):
+        idcg += ideal_rels[i] / math.log(i+1, 2)
+
+    ndcg = dcg/idcg
+
+    print("Search Results in an NDCG accuracy of: ", ndcg)
+
+def BM25(data, keywords, k, b, max_tweets, eval = None, K = 0):
     """
     Iterates through all queries and then all docs calculating the BM25 scores for each query, saving these, having been
     ordered in the set file path.
@@ -83,6 +100,19 @@ def BM25(data, keywords, k, b, max_tweets):
     data["BM25"] = data.vector.apply(lambda x: calcBM25(query_v, x, IDF, k, b, avgD))
     data = data.sort_values("BM25", ascending=False)
     data = data.reset_index()
+
+    if eval != None:
+        if eval == "rugby":
+            df = pd.read_csv("./BM25_samples/rugby world cup_output.csv")
+            print(NDCG(df))
+        elif eval == "fireworks":
+            df = pd.read_csv("./BM25_samples/fireworks night_output.csv", usecols=[0,1])
+            print(NDCG(df))
+        else:
+            print("No prepared data for evaluation")
+
+
+
     try:
         matrix += data['vector'][0:max_tweets].tolist()
         data = data.reset_index()
