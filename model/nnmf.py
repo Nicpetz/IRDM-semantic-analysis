@@ -86,6 +86,7 @@ def factorise(V, topics=10, iterations=50, init_density=0.01, convergence=None):
         if temp_cost == 0:
             break
         if convergence is not None and cache_cost - temp_cost < convergence:
+            print("Met convergence criteria of {} on iteration {}".format(convergence, i+1))
             break
         else:
             cache_cost = temp_cost
@@ -111,8 +112,8 @@ def factorise(V, topics=10, iterations=50, init_density=0.01, convergence=None):
         # H: topics x instances matrix
         H = H.multiply(H_numerator).multiply(H_denominator)
 
-    print('Successfuly factorised')
-    print('Error profile: {}'.format(cost_history))
+    print('Factorisation successful.\n')
+    print('Error profile: {}\n'.format(cost_history))
     return dok_matrix(W), H
 
 
