@@ -59,7 +59,7 @@ class Vectoriser:
 
     def get_idf(self):
         for id in self.idf.keys():
-            self.idf[id] = math.log(self.document_count / self.idf[id], 2)
+            self.idf[id] = math.log((self.document_count - self.idf[id] + 0.5) / (self.idf[id] +0.5), 2)
         return self.idf
 
     def add_vector(self, df):
