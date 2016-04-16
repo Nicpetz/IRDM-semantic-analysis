@@ -20,7 +20,7 @@ def CreateNetGraph(h):
             if h[t, tweet] > 0:
                 G.add_edge(topics[t], tweet, weight=h[t, tweet])
                 count +=1
-    print(count)
+    # print(count)
 
     nx.write_gml(G,"graph.gml")
     return G
